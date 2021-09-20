@@ -11,7 +11,7 @@ if __name__ == '__main__':
     while True:
 
         # Переменная для студента с оценкой хуже 4
-        student_bad = 0
+        student_bad = False
 
         # Средняя оценка
         average_estimation = 0
@@ -24,6 +24,7 @@ if __name__ == '__main__':
             break
 
         elif command == 'add':
+
             # Запросить данные о студенте.
             name = input("Фамилия и инициалы: ")
             group = input("Номер группы: ")
@@ -39,34 +40,34 @@ if __name__ == '__main__':
 
             # Проходит по оценкам
             for i, x in enumerate(evaluations):
-                # Если есть оценки кроме 4 и 5, то студент считается плохим
+                # Если оценки только 4 и 5, то он считается хорошим
                 if evaluations[i] == 4 or evaluations[i] == 5:
                     average_estimation += evaluations[i]
                 else:
-                    student_bad = 1
+                    # Иначе плохим
+                    student_bad = True
                     break
 
-            # Плохой студент не заносится в список
-            if student_bad:
-                continue
-            # Для хорошего вычисляется средняя оценка
-            else:
+            # Только хороший студент заносится в список
+            if not student_bad:
+
+                # Вычисляется средняя оценка
                 average_estimation /= 5
 
-            # Создать словарь.
-            student = {
-                'name': name,
-                'group': group,
-                'average_estimation': average_estimation,
-                'evaluations': evaluations,
-            }
+                # Создать словарь.
+                student = {
+                    'name': name,
+                    'group': group,
+                    'average_estimation': average_estimation,
+                    'evaluations': evaluations,
+                }
 
-            # Добавить словарь в список.
-            students.append(student)
+                # Добавить словарь в список.
+                students.append(student)
 
-            # Отсортировать список в случае необходимости.
-            if len(students) > 1:
-                students.sort(key=lambda student: student['average_estimation'], reverse=True)
+                # Отсортировать список в случае необходимости.
+                if len(students) > 1:
+                    students.sort(key=lambda student: student['average_estimation'], reverse=True)
 
         elif command == 'list':
 
@@ -79,6 +80,7 @@ if __name__ == '__main__':
             )
 
             print(line)
+
             print(
                 '| {:^4} | {:^30} | {:^20} | {:^8} |'.format(
                     "No",
@@ -87,6 +89,7 @@ if __name__ == '__main__':
                     "Средняя оценка"
                 )
             )
+
             print(line)
 
             # Вывести данные о всех студентах.
@@ -100,6 +103,7 @@ if __name__ == '__main__':
                         student.get('average_estimation', 0)
                     )
                 )
+
             print(line)
 
         elif command == 'help':
@@ -111,4 +115,3 @@ if __name__ == '__main__':
             print("exit - завершить работу с программой.")
         else:
             print(f"Неизвестная команда {command}", file=sys.stderr)
-            print(">>>")
